@@ -99,7 +99,7 @@ const DashboardPage = () => {
                         {
                             hasRole('reviewer') && (
                                 <section className="dashboard-section reviewer-section">
-                                    <h3>Maintainer</h3>
+                                    <h3>Reviewer</h3>
                                     <div className="dashboard-card-group">
                                         {
                                             reviewerCards.map((card, i) => (
