@@ -1,0 +1,185 @@
+/* Reset y configuración global */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body, #root {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  font-family: 'Orbitron', sans-serif;
+  background: url('/ruta/a/tu/imagen.jpg') center center no-repeat fixed;
+  background-size: cover;
+  color: #fff;
+}
+
+.dashboard-wrapper {
+  width: 100%;
+  min-height: 100vh;
+  background-image: url('../../public/assets/dashboard-background.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+.dashboard-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+.dashboard-label{
+  color: #fff;
+}
+/* Header */
+.dashboard-header {
+  background-color: #333;
+  padding: 24px;
+  text-align: center;
+  width: 100%;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+
+
+
+.header-content {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #ffcb05;
+}
+
+/* Main */
+.dashboard-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+  padding: 32px;
+}
+
+/* Top-row */
+.dashboard-top-row {
+  display: flex;
+  gap: 32px;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+/* Section layout */
+.dashboard-section {
+  background-color: #2a2a2a;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+  font-size: 1.1rem;
+  flex: 1;
+  min-width: 320px;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.dashboard-section:hover {
+  transform: scale(1.015);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.dashboard-section h3 {
+  border-bottom: 2px solid #ffcb05;
+  padding-bottom: 8px;
+  margin-bottom: 24px;
+}
+
+/* Player full width */
+.full-width-section {
+  width: 100%;
+}
+
+/* Cards */
+.dashboard-card-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  width: 100%;
+  overflow: hidden;
+}
+
+.dashboard-card {
+  background-color: #444;
+  border-radius: 8px;
+  padding: 24px;
+  flex: 1 1 min(45%, 400px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  font-size: 1.05rem;
+  min-height: 100px;
+}
+
+.dashboard-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+}
+
+/* Footer */
+.dashboard-footer {
+  background-color: #333;
+  padding: 32px;
+  text-align: center;
+  width: 100%;
+  border-radius: 12px;
+  box-shadow: 0 -2px 6px rgba(0,0,0,0.4);
+  overflow: hidden;
+}
+
+
+.logout-btn {
+  background-color: #ffcb05;
+  border: none;
+  border-radius: 8px;
+  padding: 16px 32px;
+  cursor: pointer;
+  font-weight: bold;
+  color: #000;
+  transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+  width: 100%;
+  font-size: 1.1rem;
+}
+
+.logout-btn:hover {
+  background-color: #d4a600;
+  transform: scale(1.02);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+}
+
+
+/* Responsive */
+@media (max-width: 768px) {
+  .dashboard-top-row {
+    flex-direction: column;
+  }
+
+  .dashboard-card {
+    flex: 1 1 100%;
+  }
+
+  .dashboard-main {
+    padding: 0px 16px;
+    margin: 0px 16px;
+  }
+
+  .dashboard-card-group {
+    gap: 16px;
+  }
+}
