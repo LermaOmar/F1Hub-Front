@@ -1,26 +1,29 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
+import '../../styles/Auth.css';
 
-function LoginPage() {
-  const [email, setEmail] = useState('');
+
+function RegisterPage() {
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('');
   const [typedText, setTypedText] = useState('');
   const [isErrorVisible, setIsErrorVisible] = useState(false);
   const typingIntervalRef = useRef(null);
   const navigate = useNavigate();
 
-  const handleLogin = async (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
-    const credentials = { email, password };
+    const newAccount = { username, email, password };
 
     try {
-      const response = await axios.post('http://localhost:8080/auth/login', credentials);
-      if (response.status === 200 && response.data.message) {
-        localStorage.setItem('auth_token', response.data.message);
-        navigate('/dashboard');
+      const response = await axios.post('http://localhost:8080/auth/register', newAccount);
+
+      if (response.status === 200 || response.status === 201) {
+        navigate('/');
       } else {
-        throw new Error('Login failed');
+        throw new Error('Unexpected error');
       }
     } catch (error) {
       const message = extractErrorMessage(error);
@@ -29,7 +32,7 @@ function LoginPage() {
   };
 
   const extractErrorMessage = (error) => {
-    let message = 'Login failed. Please try again.';
+    let message = 'Registration failed. Please try again.';
 
     if (axios.isAxiosError(error)) {
       const backendMessage = error?.response?.data?.error;
@@ -80,7 +83,7 @@ function LoginPage() {
       setIsErrorVisible(false);
       setTypedText('');
     }
-  }, [email, password]);
+  }, [username, email, password]);
 
   useEffect(() => {
     return () => {
@@ -91,13 +94,22 @@ function LoginPage() {
   }, []);
 
   return (
+    <div className="auth-page">
+
     <div className="auth-blur-wrapper">
-      <form onSubmit={handleLogin}>
-        <h2>Login</h2>
+      <form onSubmit={handleRegister}>
+        <h2>Register</h2>
+        <div>
+          <label>Username:</label>
+          <input
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+          />
+        </div>
         <div>
           <label>Email:</label>
           <input
-            type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
@@ -112,14 +124,15 @@ function LoginPage() {
             required
           />
         </div>
-        <button type="submit">Login</button>
-        <p>Don't have an account? <Link to="/register">Register here</Link></p>
+        <button type="submit">Register</button>
+        <p>Already have an account? <Link to="/">Login here</Link></p>
         {isErrorVisible && typedText && (
           <div className="error-notification">{typedText}</div>
         )}
       </form>
     </div>
+    </div>
   );
 }
 
-export default LoginPage;
+export default RegisterPage;
