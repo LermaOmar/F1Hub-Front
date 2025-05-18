@@ -4,6 +4,7 @@ import LoginPage from './pages/auth/LoginPage';
 import RegisterPage from './pages/auth/RegisterPage';
 import DashboardPage from './pages/main/DashboardPage';
 import UserPage from './pages/main/mantainence/UsersPage';
+import ContentManagementPage from './pages/main/mantainence/ContentManagementPage';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/admin/mantainence/users" element={<UserPage />} />
+        <Route path="/admin/mantainence/content" element={<ContentManagementPage/>} />
         <Route path="*" element={<Navigate to="/dashboard" replace />} />
       </Routes>
     </Router>
