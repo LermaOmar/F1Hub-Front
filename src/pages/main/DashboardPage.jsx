@@ -1,5 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import '../../styles/DashBoard.css';
+import axiosInstance from '../../utils/AxiosInstance';
+import { useNavigate } from 'react-router-dom'
 
 const parseJwt = (token) => {
     try {
@@ -11,8 +13,28 @@ const parseJwt = (token) => {
     }
 };
 
+
 const DashboardPage = () => {
+
+    const navigate = useNavigate()
     const [roles, setRoles] = useState([]);
+    
+    useEffect(() => {
+        const token = localStorage.getItem('auth_token');
+    
+        if (!token) {
+            navigate('/login');
+        } else {
+            axiosInstance.post('/auth/check')
+            .then(() => {
+                console.log("Valid token")
+            })
+            .catch((error) => {
+                console.error('Token invalid or expired:', error);
+                navigate('/login');
+            });
+        }
+        }, []);
 
     useEffect(() => {
         const token = localStorage.getItem('auth_token');
@@ -33,33 +55,42 @@ const DashboardPage = () => {
     const adminCards = [
         {
             icon: '👤',
-            label: 'Users maintenance'
-        }, {
+            label: 'Users maintenance',
+            route: '/admin/mantainence/users'
+        },
+        {
             icon: '⚙️',
-            label: 'Content maintenance'
+            label: 'Content maintenance',
+            route: '/admin/mantainence/content'
         }
-    ];
+    ]
+
 
     const reviewerCards = [
         {
             icon: '📊',
-            label: 'Assign points - Teams'
+            label: 'Assign points - Teams',
+            route: '/reviewer/assign/teams'
         }, {
             icon: '🏎️',
-            label: 'Assign points - Drivers'
+            label: 'Assign points - Drivers',
+            route: '/reviewer/assign/drivers'
         }
     ];
 
     const playerCards = [
         {
             icon: '🛡️',
-            label: 'Leagues'
+            label: 'Leagues',
+            route: '/player/leagues'
         }, {
             icon: '🏆',
-            label: 'Rankings'
+            label: 'Rankings',
+            route: '/player/rankings'
         }, {
             icon: '⭐',
-            label: 'MVP\'s'
+            label: 'MVP\'s',
+            route: '/player/mvps'
         }
     ];
 
@@ -85,7 +116,8 @@ const DashboardPage = () => {
                                     <div className="dashboard-card-group">
                                         {
                                             adminCards.map((card, i) => (
-                                                <div key={i} className="dashboard-card">
+                                                <div key={i} className="dashboard-card"
+                                                onClick={() => card.route && navigate(card.route)}>
                                                     <span className="dashboard-icon">{card.icon}</span>
                                                     <span className="dashboard-label">{card.label}</span>
                                                 </div>
