@@ -1,0 +1,95 @@
+/* Estilo general */
+.assignment-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 30px;
+  background-color: #1c1c1c;
+  color: #f0f0f0;
+  font-family: 'Orbitron', sans-serif;
+}
+
+/* Título */
+.points-title {
+  text-align: center;
+  color: #ffcc00;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+/* Tabla */
+.points-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.points-table th,
+.points-table td {
+  border: 1px solid #333;
+  padding: 10px;
+  text-align: center;
+}
+
+.points-table th {
+  background-color: #2a2a2a;
+  color: #ffcc00;
+  font-weight: bold;
+}
+
+.points-table tr:nth-child(even) {
+  background-color: #262626;
+}
+
+/* Inputs y checkboxes */
+.points-input {
+  width: 60px;
+  padding: 5px;
+  background-color: #333;
+  color: #fff;
+  border: 1px solid #555;
+  border-radius: 4px;
+}
+
+.points-checkbox {
+  transform: scale(1.2);
+}
+
+/* Puntos negativos */
+.points-cell.negative {
+  color: #ff4d4d;
+  font-weight: bold;
+}
+
+/* Botones */
+.points-button {
+  padding: 6px 12px;
+  background-color: #ffcc00;
+  color: #000;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.points-button:disabled {
+  background-color: #555;
+  color: #ccc;
+  cursor: not-allowed;
+}
+
+.points-button:hover:not(:disabled) {
+  background-color: #e6b800;
+}
+
+/* Paginación */
+.points-pagination {
+  text-align: center;
+  margin-top: 20px;
+  color: #fff;
+}
+
+.points-pagination span {
+  margin: 0 10px;
+  font-size: 16px;
+  font-weight: bold;
+}

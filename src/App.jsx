@@ -5,6 +5,7 @@ import RegisterPage from './pages/auth/RegisterPage';
 import DashboardPage from './pages/main/DashboardPage';
 import UserPage from './pages/main/mantainence/UsersPage';
 import ContentManagementPage from './pages/main/mantainence/ContentManagementPage';
+import DriverPointsAssignmentPage from './pages/main/reviewer/DriverPointsAssignmentPage';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/admin/mantainence/users" element={<UserPage />} />
         <Route path="/admin/mantainence/content" element={<ContentManagementPage/>} />
+        <Route path="/reviewer/assign/drivers" element={<DriverPointsAssignmentPage/>} />
         <Route path="*" element={<Navigate to="/dashboard" replace />} />
       </Routes>
     </Router>
