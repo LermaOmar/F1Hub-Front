@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import axios from 'axios';
+import axiosInstance from '../../utils/AxiosInstance';
 import '../../styles/Auth.css';
 
 
@@ -18,7 +18,7 @@ function RegisterPage() {
     const newAccount = { username, email, password };
 
     try {
-      const response = await axios.post('http://localhost:8080/auth/register', newAccount);
+      const response = await axiosInstance.post('/auth/register', newAccount);
 
       if (response.status === 200 || response.status === 201) {
         navigate('/');

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import '../../styles/Auth.css';
 import { useNavigate, Link } from 'react-router-dom';
-import axios from 'axios';
+import axiosInstance from '../../utils/AxiosInstance';
 
 function LoginPage() {
   const [email, setEmail] = useState('');
@@ -16,7 +16,7 @@ function LoginPage() {
     const credentials = { email, password };
 
     try {
-      const response = await axios.post('http://localhost:8080/auth/login', credentials);
+      const response = await axiosInstance.post('/auth/login', credentials);
       if (response.status === 200 && response.data.message) {
         localStorage.setItem('auth_token', response.data.message);
         navigate('/dashboard');
