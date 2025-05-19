@@ -78,7 +78,6 @@ const ContentPage = ({ entityName, endpoint, fields }) => {
         }
       })
       .then((response) => {
-        console.log(response.data.content)
         setItems(response.data.content);
         setPagination({
           pageNumber: response.data.pageNumber,
@@ -100,12 +99,11 @@ const ContentPage = ({ entityName, endpoint, fields }) => {
   };
 
   const handleSave = async (item, isNew) => {
-    console.log(item)
     try {
       if (isNew) {
-        await axiosInstance.post(`/${endpoint}`, item);
+        await axiosInstance.post(`/${endpoint}`, item)
       } else {
-        await axiosInstance.put(`/${endpoint}/${item.id}`, item);
+        await axiosInstance.put(`/${endpoint}/${item.id}`, item)
       }
       fetchItems();
     } catch (error) {
