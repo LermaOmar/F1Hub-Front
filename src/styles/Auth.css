@@ -12,7 +12,7 @@
   height: 100%;
   width: 100%;
   font-family: 'Orbitron', sans-serif;
-  background-image: url('/assets/auth-background.png');
+  background-image: url('../../public/auth-background.png');
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
@@ -115,7 +115,6 @@
   text-decoration: underline;
 }
 
-/* Glitch Fix */
 .auth-page body::before,
 .auth-page body > div::before {
   content: none !important;

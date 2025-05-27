@@ -10,7 +10,7 @@ html, body, #root {
   height: 100%;
   overflow-x: hidden;
   font-family: 'Orbitron', sans-serif;
-  background: url('/ruta/a/tu/imagen.jpg') center center no-repeat fixed;
+  background-color: #2a2a2a;
   background-size: cover;
   color: #fff;
 }
@@ -18,8 +18,8 @@ html, body, #root {
 /* Wrapper */
 .dashboard-wrapper {
   width: 100%;
-  min-height: 100vh;
-  background-image: url('../../public/assets/dashboard-background.png');
+  min-height: 100%;
+  background-image: url('../../public/dashboard-background.png');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
