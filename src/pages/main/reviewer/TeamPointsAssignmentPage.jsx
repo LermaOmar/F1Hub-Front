@@ -152,7 +152,7 @@ const TeamPointsAssignmentPage = () => {
       {isErrorVisible && errorMessage && (
         <div className="error-notification">
           {errorMessage}
-          <button className="close-btn" onClick={() => setIsErrorVisible(false)}>&times;</button>
+          <button className="close-btn" onClick={() => setIsErrorVisible(false)}>❌</button>
         </div>
       )}
 

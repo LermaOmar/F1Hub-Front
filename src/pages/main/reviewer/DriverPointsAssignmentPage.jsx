@@ -181,7 +181,7 @@ const DriverPointsAssignmentPage = () => {
         <div className="error-notification">
           {errorMessage}
           <button className="close-btn" onClick={() => setIsErrorVisible(false)}>
-            &times;
+            ❌
           </button>
         </div>
       )}

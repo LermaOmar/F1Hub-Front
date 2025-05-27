@@ -119,8 +119,7 @@
 
 /* Error notification message */
 .error-notification {
-  background-color: #ff4d4d;
-  color: #fff;
+  color: #ff4d4d;
   padding: 10px 15px;
   margin-bottom: 20px;
   border-radius: 4px;
@@ -130,15 +129,27 @@
 
 /* Error close button */
 .close-btn {
-  position: absolute;
-  right: 10px;
-  top: 6px;
   background: none;
   border: none;
-  font-size: 18px;
-  color: #fff;
+  font-size: 1.3rem;
+  color: #ffffff;
+  font-weight: bold;
   cursor: pointer;
+  margin-left: 12px;
+  text-shadow: 0 0 4px rgba(255, 0, 0, 0.8), 0 0 10px rgba(255, 0, 0, 0.5);
+  transition: transform 0.2s ease, color 0.2s ease;
 }
+
+.close-btn:hover {
+  transform: scale(1.2);
+  color: #ff4d4d;
+  text-shadow: 0 0 6px rgba(255, 50, 50, 1), 0 0 12px rgba(255, 50, 50, 0.7);
+}
+
+.close-btn:active {
+  transform: scale(0.95);
+}
+
 
 /* Pagination text (if used) */
 .points-pagination {
