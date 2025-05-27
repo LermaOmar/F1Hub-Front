@@ -6,6 +6,8 @@ import DashboardPage from './pages/main/DashboardPage';
 import UserPage from './pages/main/mantainence/UsersPage';
 import ContentManagementPage from './pages/main/mantainence/ContentManagementPage';
 import DriverPointsAssignmentPage from './pages/main/reviewer/DriverPointsAssignmentPage';
+import TeamPointsAssignmentPage from './pages/main/reviewer/TeamPointsAssignmentPage';
+import MVPPage from './pages/main/player/MvpPage';
 
 function App() {
   return (
@@ -17,7 +19,9 @@ function App() {
         <Route path="/admin/mantainence/users" element={<UserPage />} />
         <Route path="/admin/mantainence/content" element={<ContentManagementPage/>} />
         <Route path="/reviewer/assign/drivers" element={<DriverPointsAssignmentPage/>} />
-        <Route path="*" element={<Navigate to="/dashboard" replace />} />
+        <Route path="/reviewer/assign/teams" element={<TeamPointsAssignmentPage/>} />
+        <Route path="/player/mvps" element={<MVPPage/>} />
+        <Route path="*" element={<Navigate to="/dashboard" />} />
       </Routes>
     </Router>
   );
