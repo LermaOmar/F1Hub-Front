@@ -1,14 +1,16 @@
-/* Estilo general */
+/* Main container */
 .assignment-page {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 30px;
+  padding: 30px 15px;
   background-color: #1c1c1c;
   color: #f0f0f0;
   font-family: 'Orbitron', sans-serif;
+  box-sizing: border-box;
+  font-size: 15px;
 }
 
-/* Título */
+/* Page title */
 .points-title {
   text-align: center;
   color: #ffcc00;
@@ -16,72 +18,129 @@
   margin-bottom: 20px;
 }
 
-/* Tabla */
+/* Full-width responsive table */
 .points-table {
   width: 100%;
   border-collapse: collapse;
   margin-bottom: 20px;
+  table-layout: fixed;
 }
 
+/* Table headers and cells */
 .points-table th,
 .points-table td {
   border: 1px solid #333;
   padding: 10px;
   text-align: center;
+  word-wrap: break-word;
+  font-size: 14px;
 }
 
+/* Header row styling */
 .points-table th {
   background-color: #2a2a2a;
   color: #ffcc00;
   font-weight: bold;
 }
 
+/* Zebra striping for rows */
 .points-table tr:nth-child(even) {
   background-color: #262626;
 }
 
-/* Inputs y checkboxes */
+/* Left align team names */
+.points-table td:first-child {
+  text-align: left;
+  padding-left: 15px;
+}
+
+/* Input field for positions */
 .points-input {
-  width: 60px;
+  width: 100%;
+  max-width: 60px;
   padding: 5px;
   background-color: #333;
   color: #fff;
   border: 1px solid #555;
   border-radius: 4px;
+  font-size: 14px;
+  box-sizing: border-box;
 }
 
+/* Checkbox styling */
 .points-checkbox {
   transform: scale(1.2);
 }
 
-/* Puntos negativos */
+/* Negative point styling */
 .points-cell.negative {
-  color: #ff4d4d;
+  color: red;
   font-weight: bold;
 }
 
-/* Botones */
-.points-button {
-  padding: 6px 12px;
+/* Button styling */
+.points-button,
+.mass-submit-btn,
+.back-btn {
+  padding: 8px 16px;
   background-color: #ffcc00;
   color: #000;
   border: none;
   border-radius: 4px;
   cursor: pointer;
   font-weight: bold;
+  margin: 5px;
+  font-size: 14px;
 }
 
-.points-button:disabled {
+/* Disabled button look */
+.points-button:disabled,
+.mass-submit-btn:disabled,
+.back-btn:disabled {
   background-color: #555;
   color: #ccc;
   cursor: not-allowed;
 }
 
-.points-button:hover:not(:disabled) {
+/* Hover effect for enabled buttons */
+.points-button:hover:not(:disabled),
+.mass-submit-btn:hover:not(:disabled),
+.back-btn:hover:not(:disabled) {
   background-color: #e6b800;
 }
 
-/* Paginación */
+/* Container for action buttons */
+.header-controls {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+/* Error notification message */
+.error-notification {
+  background-color: #ff4d4d;
+  color: #fff;
+  padding: 10px 15px;
+  margin-bottom: 20px;
+  border-radius: 4px;
+  font-weight: bold;
+  position: relative;
+}
+
+/* Error close button */
+.close-btn {
+  position: absolute;
+  right: 10px;
+  top: 6px;
+  background: none;
+  border: none;
+  font-size: 18px;
+  color: #fff;
+  cursor: pointer;
+}
+
+/* Pagination text (if used) */
 .points-pagination {
   text-align: center;
   margin-top: 20px;
@@ -92,4 +151,42 @@
   margin: 0 10px;
   font-size: 16px;
   font-weight: bold;
+}
+
+/* Responsive adjustments only on small screens */
+@media (max-width: 768px) {
+  .assignment-page {
+    font-size: 13px;
+  }
+
+  .points-title {
+    font-size: 18px;
+  }
+
+  .points-table th,
+  .points-table td {
+    font-size: 12px;
+    padding: 6px;
+  }
+
+  .points-input {
+    font-size: 12px;
+  }
+
+  .points-button,
+  .mass-submit-btn,
+  .back-btn {
+    width: 100%;
+    margin: 5px 0;
+    font-size: 12px;
+  }
+
+  .header-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .points-pagination span {
+    font-size: 13px;
+  }
 }
