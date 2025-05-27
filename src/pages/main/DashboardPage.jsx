@@ -155,7 +155,8 @@ const DashboardPage = () => {
                                 <div className="dashboard-card-group">
                                     {
                                         playerCards.map((card, i) => (
-                                            <div key={i} className="dashboard-card">
+                                            <div key={i} className="dashboard-card"
+                                            onClick={() => card.route && navigate(card.route)}>
                                                 <span className="dashboard-icon">{card.icon}</span>
                                                 <span className="dashboard-label">{card.label}</span>
                                             </div>
