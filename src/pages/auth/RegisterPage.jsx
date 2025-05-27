@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axiosInstance from '../../utils/AxiosInstance';
 import '../../styles/Auth.css';
+import axios from 'axios';
 
 
 function RegisterPage() {
