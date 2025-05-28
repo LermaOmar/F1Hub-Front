@@ -116,7 +116,8 @@ function LoginPage() {
           />
         </div>
         <button type="submit">Login</button>
-        <p>Don't have an account? <Link to="/register">Register here</Link></p>
+        <p>Don't have an account? <br /> <Link to="/register">Register here</Link></p>
+        <p>Want to resend account activation? <br /> <Link to="/resend-activation">Resend Account Activation</Link></p>
         {isErrorVisible && typedText && (
           <div className="error-notification">{typedText}</div>
         )}

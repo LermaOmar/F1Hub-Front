@@ -8,6 +8,7 @@ import ContentManagementPage from './pages/main/mantainence/ContentManagementPag
 import DriverPointsAssignmentPage from './pages/main/reviewer/DriverPointsAssignmentPage';
 import TeamPointsAssignmentPage from './pages/main/reviewer/TeamPointsAssignmentPage';
 import MVPPage from './pages/main/player/MvpPage';
+import ResendVerificationPage from './pages/auth/ResendActivationPage';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
       <Routes>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
+        <Route path="/resend-activation" element={<ResendVerificationPage />} />
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/admin/mantainence/users" element={<UserPage />} />
         <Route path="/admin/mantainence/content" element={<ContentManagementPage/>} />
