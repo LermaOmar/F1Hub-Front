@@ -1,0 +1,249 @@
+/* ========== GAME LINEUP ========== */
+.section-title {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.game-lineup {
+  padding: 24px;
+  background-color: #1f1f1f;
+  border-radius: 12px;
+  margin-bottom: 32px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+}
+
+.lineup-cards {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.card-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.lineup-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.lineup-btn {
+  padding: 6px 12px;
+  font-size: 0.8rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  background-color: #ffcb05;
+  color: #000;
+  font-weight: bold;
+  transition: background-color 0.2s;
+}
+
+.lineup-btn:hover {
+  background-color: #d4a600;
+}
+
+/* ========== MARKET TOGGLE BUTTON ========== */
+.toggle-btn {
+  display: block;
+  margin: 0 auto;
+  background-color: #ffcb05;
+  color: #000;
+  border: none;
+  border-radius: 50px;
+  font-weight: bold;
+  font-size: 1.3rem;
+  cursor: pointer;
+  z-index: 1200;
+  padding: 10px 18px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
+  transition: background-color 0.3s ease;
+  z-index: 1000;
+}
+
+.toggle-btn:hover {
+  background-color: #d4a600;
+}
+
+/* ========== MARKET WIDGET PANEL ========== */
+.market-widget-wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.market-widget {
+  width: 100%;
+  transform: translateY(100%);
+  background-color: #1f1f1f;
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow-y: hidden;
+  max-height: 600px;
+  padding: 30px 20px;
+  box-shadow: 0 -6px 14px rgba(0, 0, 0, 0.5);
+  pointer-events: none;
+  opacity: 0;
+}
+
+.market-widget.open {
+  transform: translateY(0%);
+  pointer-events: all;
+  opacity: 1;
+}
+
+/* ========== MARKET CONTENT ========== */
+.market-title {
+  color: #ffcb05;
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.market-content {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 10px;
+}
+
+.empty-market {
+  color: #ccc;
+  text-align: center;
+  width: 100%;
+  font-size: 1rem;
+  padding: 20px;
+}
+
+/* ========== MARKET ITEM CARD ========== */
+.market-item-card {
+  display: flex;
+  align-items: center;
+  background: #333;
+  border: 1px solid #444;
+  border-radius: 10px;
+  padding: 16px;
+  width: 300px;
+  min-height: 100px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+  transition: transform 0.2s ease;
+  flex-direction: row;
+  position: relative;
+}
+
+.market-item-card:hover {
+  transform: scale(1.02);
+}
+
+.market-item-image {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.market-item-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: #fff;
+  font-size: 0.85rem;
+  flex: 1;
+  margin-left: 12px;
+}
+
+.market-item-sub {
+  font-size: 0.75rem;
+  color: #aaa;
+}
+
+.market-item-price {
+  font-weight: bold;
+  color: #ffcb05;
+}
+
+.offer-info {
+  margin-top: 8px;
+  font-size: 0.8rem;
+  color: #ccc;
+}
+
+.offer-buttons {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.make-offer-btn,
+.edit-offer-btn {
+  padding: 6px 10px;
+  font-size: 0.85rem;
+  background-color: #ffcb05;
+  color: #000;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.2s ease;
+}
+
+.make-offer-btn:hover:not(:disabled),
+.edit-offer-btn:hover:not(:disabled) {
+  background-color: #d4a600;
+}
+
+.make-offer-btn:disabled,
+.edit-offer-btn:disabled {
+  background-color: #555;
+  cursor: not-allowed;
+}
+
+.offers-list {
+  margin-top: 10px;
+  font-size: 0.75rem;
+  color: #ddd;
+}
+
+.offers-list ul {
+  padding-left: 20px;
+  margin: 4px 0;
+}
+
+/* ========== MODAL STYLES ========== */
+.offers-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1200;
+}
+
+.modal-content {
+  background: #222;
+  color: white;
+  padding: 24px;
+  border-radius: 12px;
+  max-width: 400px;
+  width: 90%;
+}
+
+.modal-overlay {
+  z-index: 9999; /* Muy alto para asegurar prioridad */
+}
+
+
+

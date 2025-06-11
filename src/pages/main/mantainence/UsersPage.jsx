@@ -112,6 +112,7 @@ const UserPage = () => {
       } else {
         await axiosInstance.put(`/accounts/${user.id}`, body);
       }
+      setShowModal(false)
       fetchUsers();
     } catch (error) {
     showTypingError(error?.response?.data?.error || error.message || 'Unexpected error occurred');
@@ -126,8 +127,8 @@ const UserPage = () => {
   const handleDelete = async (id) => {
     if (window.confirm('Wanna delete this user?')) {
       try {
-        await axiosInstance.delete(`/appUsers/${id}`);
-        setUsers(prev => prev.filter(u => u.id !== id));
+        await axiosInstance.delete(`/appUsers/${id}`)
+        fetchUsers()
       } catch (error) {
         showTypingError(error?.response?.data?.error || error.message || 'Unexpected error occurred');
         if (error.response?.status === 401 || error.response?.status === 403) {
@@ -181,8 +182,10 @@ const UserPage = () => {
           user={selectedUser}
           onClose={() => setShowModal(false)}
           onSave={handleSave}
+          isOpen={showModal} // <-- AGREGA ESTA LÍNEA TAMBIÉN
         />
       )}
+
       <div className="pagination">
         <button
           onClick={() => handlePageChange(pagination.pageNumber - 1)}

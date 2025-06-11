@@ -1,18 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import ReactDOM from 'react-dom';
 import '../styles/Management.css';
 
 const rolesList = ['ADMIN', 'REVIEWER', 'PLAYER'];
 
-const UserFormModal = ({ user, onSave, onClose }) => {
+const UserFormModal = ({ user, onSave, onClose, isOpen }) => {
   const isNew = !user;
-const [form, setForm] = useState({
-  username: '',
-  email: '',
-  password: '',
-  roles: ['PLAYER'],
-  active: false
-});
 
+  const [form, setForm] = useState({
+    username: '',
+    email: '',
+    password: '',
+    roles: ['PLAYER'],
+    active: true
+  });
 
   useEffect(() => {
     if (user) {
@@ -22,11 +23,21 @@ const [form, setForm] = useState({
         email: user.email,
         password: '',
         roles: user.roles || [],
-        active: user.active ?? false
-
+        active: user.active ?? true
       });
     }
   }, [user]);
+
+  useEffect(() => {
+    if (isOpen) {
+      document.body.classList.add('modal-open');
+    } else {
+      document.body.classList.remove('modal-open');
+    }
+    return () => document.body.classList.remove('modal-open');
+  }, [isOpen]);
+
+  if (!isOpen) return null;
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -44,17 +55,25 @@ const [form, setForm] = useState({
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (!form.username.trim() || !form.email.trim()) {
+      alert('Username and Email are required.');
+      return;
+    }
+    if (isNew && !form.password.trim()) {
+      alert('Password is required for new users.');
+      return;
+    }
     if (form.roles.length === 0) {
-      alert('Please select at least one role.');
+      alert('Select at least one role.');
       return;
     }
     onSave(form, isNew);
   };
 
-  return (
+  const modal = (
     <div className="modal-overlay">
-      <div className="modal dark">
-        <h3>{isNew ? 'Create' : 'Edit'}</h3>
+      <div className="modal-content fadeIn">
+        <h3>{isNew ? 'Create User' : 'Edit User'}</h3>
         <form onSubmit={handleSubmit}>
           <input
             name="username"
@@ -79,31 +98,33 @@ const [form, setForm] = useState({
             onChange={handleChange}
             required={isNew}
           />
+
           <div className="roles">
-            {rolesList.map((r) => (
-              <label key={r}>
+            {rolesList.map((role) => (
+              <label key={role}>
                 <input
                   type="checkbox"
-                  checked={form.roles.includes(r)}
-                  onChange={() => handleRoles(r)}
+                  checked={form.roles.includes(role)}
+                  onChange={() => handleRoles(role)}
                 />
-                {r}
+                {role}
               </label>
             ))}
           </div>
-            <div className="active-toggle">
-              <label className="switch">
-                <input
-                  type="checkbox"
-                  checked={form.active}
-                  onChange={(e) => setForm(prev => ({ ...prev, active: e.target.checked }))}
-                />
-                <span className="slider round"></span>
-              </label>
-              <span className="checkbox-label">Active</span>
-            </div>
 
-
+          <div className="active-toggle">
+            <label className="switch">
+              <input
+                type="checkbox"
+                checked={form.active}
+                onChange={(e) =>
+                  setForm((prev) => ({ ...prev, active: e.target.checked }))
+                }
+              />
+              <span className="slider round" />
+            </label>
+            <span className="checkbox-label">Active</span>
+          </div>
 
           <div className="form-actions">
             <button type="submit">Save</button>
@@ -113,6 +134,8 @@ const [form, setForm] = useState({
       </div>
     </div>
   );
+
+  return ReactDOM.createPortal(modal, document.body);
 };
 
 export default UserFormModal;

@@ -11,7 +11,8 @@ const CONFIG = {
       { key: 'name', label: 'Name', required: true },
       { key: 'nationality', label: 'Nationality', required: true },
       { key: 'price', label: 'Price', type: 'number', required: true },
-      { key: 'active', label: 'Active', type: 'checkbox' }
+      { key: 'active', label: 'Active', type: 'checkbox' },
+      { key: 'base64image', label: 'Image', type: 'image' }
     ]
   },
   drivers: {
@@ -21,7 +22,8 @@ const CONFIG = {
       { key: 'name', label: 'Name', required: true },
       { key: 'nationality', label: 'Nationality', required: true },
       { key: 'price', label: 'Price', type: 'number', required: true },
-      { key: 'active', label: 'Active', type: 'checkbox' }
+      { key: 'active', label: 'Active', type: 'checkbox' },
+      { key: 'base64image', label: 'Image', type: 'image' }
     ]
   }
 };

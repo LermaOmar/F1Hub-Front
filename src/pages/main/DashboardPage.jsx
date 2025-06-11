@@ -103,10 +103,11 @@ const DashboardPage = () => {
         <div className="dashboard-wrapper">
             <div className="dashboard-container">
                 <header className="dashboard-header">
-                    <div className="header-content">DASHBOARD</div>
+                    <div className="header-content">DASHBOARD </div>
                 </header>
 
                 <main className="dashboard-main">
+                    <div className="dashboard-section documentation dashboard-header header-content" onClick={() => navigate("/docs")} > Documentation 📄</div>
 
                     <div className="dashboard-top-row">
                         {
