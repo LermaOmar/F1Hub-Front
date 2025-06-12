@@ -22,7 +22,7 @@ import ReviewerGuide from './docs/ReviewerGuide';
 import PlayerGuide from './docs/PlayerGuide';
 function App() {
   return (
-    <Router>
+    <Router basename='/F1Hub-Front'>
       <Routes>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
