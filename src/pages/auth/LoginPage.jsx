@@ -12,6 +12,21 @@ function LoginPage() {
   const typingIntervalRef = useRef(null);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const token = localStorage.getItem('auth_token');
+
+    if (!token) {
+        navigate('/login');
+    } else {
+        axiosInstance.post('/auth/check')
+        .then(() => {
+            navigate("/dashboard")
+        })
+        .catch();
+    }
+  }, []);
+  
+
   const handleLogin = async (e) => {
     e.preventDefault();
     const credentials = { email, password };

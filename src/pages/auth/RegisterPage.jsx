@@ -22,7 +22,7 @@ function RegisterPage() {
       const response = await axiosInstance.post('/auth/register', newAccount);
 
       if (response.status === 200 || response.status === 201) {
-        navigate('/');
+        navigate('/login');
       } else {
         throw new Error('Unexpected error');
       }

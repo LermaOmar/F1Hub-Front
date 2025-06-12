@@ -1,7 +1,7 @@
 import React from 'react';
 import '../styles/Mvp.css';
 
-const MVPCard = ({ name, image, stats }) => {
+const MVPCard = ({ name, image, stats = {} }) => {
   return (
     <div className="mvp-card">
       <div className="card-background">

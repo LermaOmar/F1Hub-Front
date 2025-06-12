@@ -3,12 +3,15 @@ import MVPCard from '../../../components/MvpCard';
 import '../../../styles/Mvp.css';
 import axiosInstance from '../../../utils/AxiosInstance';
 import { useNavigate } from 'react-router-dom';
+import { useAjaxErrorHandler } from '../../../hooks/AjaxErrorHandler';
+
 
 const MVPPage = () => {
   const [teamMVP, setTeamMVP] = useState(null);
   const [driverMVPs, setDriverMVPs] = useState([]);
 
   const navigate = useNavigate()
+  const { typedText, isErrorVisible, handleAjaxError } = useAjaxErrorHandler();
 
   useEffect(() => {
 
@@ -18,7 +21,7 @@ const MVPPage = () => {
         return axiosInstance.get(`/teams/${id}`);
       })
       .then(response => setTeamMVP(response.data))
-      .catch(error => console.error('❌ Error fetching full team MVP:', error));
+      .catch(handleAjaxError);
 
     axiosInstance.get('/drivers/mvps')
       .then(response => {
@@ -28,7 +31,7 @@ const MVPPage = () => {
         );
       })
       .then(fullDrivers => setDriverMVPs(fullDrivers))
-      .catch(error => console.error('❌ Error fetching full driver MVPs:', error));
+      .catch(handleAjaxError);
   }, []);
 
 
@@ -43,7 +46,9 @@ const MVPPage = () => {
                 ← Back to Dashboard
             </button>
         </div>
-
+        {isErrorVisible && typedText && (
+          <div className="error-notification">{typedText}</div>
+        )}
         <section className="mvp-section">
             <h2 className="mvp-subtitle">Top Performers</h2>
             <div className="mvp-cards">

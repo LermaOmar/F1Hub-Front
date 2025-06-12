@@ -1,3 +1,8 @@
+
+body.modal-open {
+  overflow: hidden;
+}
+
 /* === Layout & Wrapper === */
 .user-page,
 .content-wrapper.dark {
@@ -178,6 +183,7 @@ button:focus {
 
 /* === Modal & Overlay === */
 .modal-overlay {
+  backdrop-filter: blur(4px);
   position: fixed;
   top: 0; left: 0;
   height: 100vh;
@@ -446,4 +452,153 @@ input:checked + .slider:before {
 
 .error-close:active {
   transform: scale(0.85);
+}
+
+
+.img-preview {
+  margin-top: 10px;
+  max-width: 100%;
+  border-radius: 6px;
+  object-fit: cover;
+}
+
+
+.image-upload-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 16px;
+  width: 100%;
+}
+
+.file-upload-label {
+  width: 100%;
+}
+
+.upload-button {
+  margin-top: 10px;
+  display: block;
+  width: 100%;
+  text-align: center;
+  padding: 12px 0;
+  background-color: #ffcb05;
+  color: #000;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.upload-button:hover {
+  background-color: #d4a600;
+}
+
+.file-upload-label input[type="file"] {
+  opacity: 0;
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+
+.preview-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  text-align: center;
+}
+
+.img-preview {
+  max-width: 100%;
+  max-height: 200px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 2px solid #444;
+  box-shadow: 0 2px 8px rgba(255, 255, 255, 0.05);
+}
+
+.file-name {
+  font-size: 0.95rem;
+  color: #8af48a;
+  font-weight: bold;
+}
+
+
+.activation-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #121212;
+  padding: 20px;
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+.activation-box {
+  background: #1e1e1e;
+  border: 2px solid #333;
+  border-radius: 16px;
+  padding: 40px 24px;
+  max-width: 400px;
+  text-align: center;
+  color: #fff;
+  box-shadow: 0 0 30px rgba(255, 255, 255, 0.05);
+}
+
+.activation-box h2 {
+  font-family: 'Orbitron', sans-serif;
+  color: #ffcb05;
+  margin-bottom: 1rem;
+}
+
+.activation-status {
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin: 1rem 0;
+}
+
+.activation-container.success .join-status {
+  color: #00cc66;
+}
+
+.activation-container.error .join-status {
+  color: #ff4d4d;
+}
+
+.sub-message {
+  font-size: 0.85rem;
+  color: #aaa;
+}
+
+@keyframes fadeIn {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0px);
+    opacity: 1;
+  }
+}
+
+
+.dots span {
+  animation: blink 1.5s infinite;
+  animation-fill-mode: both;
+  display: inline-block;
+  font-weight: bold;
+}
+
+.dots span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.dots span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes blink {
+  0%, 80%, 100% { opacity: 0; }
+  40% { opacity: 1; }
 }

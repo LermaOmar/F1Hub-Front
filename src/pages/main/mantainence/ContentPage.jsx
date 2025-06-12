@@ -20,6 +20,18 @@ const ContentPage = ({ entityName, endpoint, fields }) => {
   const [errorMessage, setErrorMessage] = useState('');
   const [isErrorVisible, setIsErrorVisible] = useState(false);
   const typingRef = useRef(null);
+
+
+  const fileToBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onloadend = () => resolve(reader.result);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  };
+
+
   const checkToken = () =>{
     const token = localStorage.getItem('auth_token');
 
@@ -100,20 +112,31 @@ const ContentPage = ({ entityName, endpoint, fields }) => {
 
   const handleSave = async (item, isNew) => {
     try {
-      if (isNew) {
-        await axiosInstance.post(`/${endpoint}`, item)
-      } else {
-        await axiosInstance.put(`/${endpoint}/${item.id}`, item)
+      const processedItem = { ...item };
+
+      for (const field of fields) {
+        if (field.type === 'image' && processedItem[field.key] instanceof File) {
+          processedItem[field.key] = await fileToBase64(processedItem[field.key])
+        }
       }
+      console.log("ITEM:")
+      console.log(processedItem)
+      if (isNew) {
+        await axiosInstance.post(`/${endpoint}`, processedItem);
+      } else {
+        await axiosInstance.put(`/${endpoint}/${item.id}`, processedItem);
+      }
+
       fetchItems();
     } catch (error) {
       showTypingError(error?.response?.data?.error || error.message || 'Unexpected error occurred');
       if (error.response?.status === 401 || error.response?.status === 403) {
-          navigate('/login');
-        }
+        navigate('/login');
+      }
     }
     setShowModal(false);
   };
+
 
   const handleDelete = async (id) => {
     if (window.confirm(`Do you want to delete this ${entityName}?`)) {
@@ -170,8 +193,10 @@ const ContentPage = ({ entityName, endpoint, fields }) => {
           onClose={() => setShowModal(false)}
           onSave={handleSave}
           fields={fields}
+          isOpen={showModal}
         />
       )}
+
       <div className="pagination">
         <button
           onClick={() => handlePageChange(pagination.pageNumber - 1)}
