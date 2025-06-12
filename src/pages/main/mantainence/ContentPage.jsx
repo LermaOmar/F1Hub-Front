@@ -119,8 +119,7 @@ const ContentPage = ({ entityName, endpoint, fields }) => {
           processedItem[field.key] = await fileToBase64(processedItem[field.key])
         }
       }
-      console.log("ITEM:")
-      console.log(processedItem)
+
       if (isNew) {
         await axiosInstance.post(`/${endpoint}`, processedItem);
       } else {

@@ -77,7 +77,6 @@ const LeaguePage = () => {
 
   const handleLeaveLeague = async (id) => {
     try {
-      console.log(userId)
       await axiosInstance.put(`/appUsers/leaveLeague/${id}`, { id: userId });
       fetchLeagues();
     } catch (err) {

@@ -29,7 +29,6 @@ const OfferModal = ({ item, editing, leagueId, onClose }) => {
 };
 
   const submit = () => {
-    console.log(item)
     const payload = editing
       ? { amount }
       : { appUser: getUserIdFromToken(), league: leagueId, marketItem: item.id, amount };

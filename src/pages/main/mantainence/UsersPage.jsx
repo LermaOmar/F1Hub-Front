@@ -104,7 +104,6 @@ const UserPage = () => {
       active: user.active
       
     };
-    console.log(body)
 
     try {
       if (isNew) {

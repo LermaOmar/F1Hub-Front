@@ -17,8 +17,6 @@ const MarketWidget = ({ leagueId }) => {
       try {
         const marketRes = await axiosInstance.get(`/marketItems/${leagueId}/league`);
         const items = marketRes.data.content || [];
-        console.log("items")
-        console.log(marketRes.data.content)
         setMarketItems(items);
 
         const token = localStorage.getItem('auth_token');

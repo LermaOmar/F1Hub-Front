@@ -35,7 +35,6 @@ const MVPPage = () => {
   }, []);
 
 
-  useEffect(()=> {console.log(teamMVP)},[teamMVP])
 
   return (
     <>

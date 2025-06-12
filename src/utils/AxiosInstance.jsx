@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const axiosInstance = axios.create({
-  baseURL: 'http://172.25.36.12:8080',
+  baseURL: 'https://f1hub-back.onrender.com',
 });
 
 axiosInstance.interceptors.request.use(
