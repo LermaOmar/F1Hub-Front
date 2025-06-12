@@ -34,7 +34,7 @@ const GameLineUp = ({ drivers = [], team, marketItems = [],leagueId }) => {
 
     try {
       const res = await axiosInstance.get(`/offers/${leagueId}/league/${item.id}/item`);
-      setOffersModal({ open: true, offers: res.data, item });
+      setOffersModal({ open: true, offers: res.data.content, item });
     } catch (err) {
       setOffersModal({ open: true, offers: [], item });
     }

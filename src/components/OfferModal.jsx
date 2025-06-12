@@ -11,7 +11,7 @@ const OfferModal = ({ item, editing, leagueId, onClose }) => {
   const navigate = useNavigate()
   useEffect(() => {
     if (editing) {
-      axiosInstance.get(`/offers/${leagueId}/league/${item.id}/item`)
+      axiosInstance.get(`/offers/${leagueId}/league/${item.id}/item/mine`)
         .then(res => setAmount(res.data.amount))
         .catch(() => {});
     }
