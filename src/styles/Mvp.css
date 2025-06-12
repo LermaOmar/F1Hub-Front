@@ -1,0 +1,196 @@
+.mvp-page {
+  padding: 40px 20px;
+  background-color: #1c1c1c;
+  color: #fff;
+  font-family: 'Orbitron', sans-serif;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+/* === Título Principal === */
+.mvp-title {
+  font-size: 3.4rem;
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  letter-spacing: 1.5px;
+  color: #ffffff;
+  text-shadow: 0 2px 6px rgba(255, 255, 255, 0.2);
+}
+
+.mvp-title::after {
+  content: '';
+  display: block;
+  width: 120px;
+  height: 4px;
+  margin: 10px auto 0;
+  background-color: #ffcc00;
+  border-radius: 2px;
+}
+
+/* === Controles de Navegación === */
+.header-controls {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+.back-btn {
+  width: 920px;
+  max-width: 100%;
+  background-color: #ffcc00;
+  color: #000;
+  border: none;
+  padding: 16px;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  text-align: center;
+}
+
+.back-btn:hover {
+  background-color: #e0b800;
+  transform: translateY(-1px);
+}
+
+/* === Subtítulo de Sección === */
+.mvp-subtitle {
+  font-size: 2.4rem;
+  margin: 40px 0 30px;
+  text-align: center;
+  color: #ffcc00;
+  text-shadow: 0 0 8px rgba(255, 204, 0, 0.3);
+}
+
+.mvp-subtitle::after {
+  content: '';
+  display: block;
+  width: 80px;
+  height: 4px;
+  margin: 10px auto 0;
+  background-color: #ffffff;
+  border-radius: 2px;
+}
+
+/* === Contenedor de Cartas === */
+.mvp-cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 40px;
+}
+
+/* === Cartas MVP === */
+.mvp-card {
+  width: 280px;
+  height: 420px;
+  background: linear-gradient(135deg, #1e1e1e, #2a2a2a);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  transition: transform 0.3s ease;
+}
+
+.mvp-card:hover {
+  transform: scale(1.04);
+}
+
+.card-background {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.player-image {
+  width: 100%;
+  height: 65%;
+  object-fit: cover;
+  display: block;
+}
+
+.card-overlay {
+  position: absolute;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.85);
+  width: 100%;
+  padding: 14px;
+  box-sizing: border-box;
+}
+
+.player-name {
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #ffcc00;
+  margin-bottom: 8px;
+  text-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
+}
+
+.player-stats {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  text-align: left;
+  font-size: 1rem;
+}
+
+.player-stats li {
+  margin: 6px 0;
+}
+
+/* === Responsive: 920px a 769px === */
+@media (max-width: 920px) and (min-width: 769px) {
+  .mvp-card {
+    width: 220px;
+    height: 360px;
+  }
+
+  .player-image {
+    height: 60%;
+  }
+
+  .back-btn {
+    width: 100%;
+  }
+
+  .header-controls {
+    padding: 0 10px;
+  }
+}
+
+/* === Responsive: Mobile < 768px === */
+@media (max-width: 768px) {
+  .mvp-title {
+    font-size: 2.4rem;
+  }
+
+  .mvp-subtitle {
+    font-size: 1.7rem;
+  }
+
+  .mvp-card {
+    width: 90%;
+    height: auto;
+  }
+
+  .player-image {
+    height: auto;
+  }
+
+  .player-stats li {
+    font-size: 0.95rem;
+  }
+
+  .back-btn {
+    font-size: 0.95rem;
+    padding: 14px;
+    width: 100%;
+  }
+
+  .header-controls {
+    padding: 0 10px;
+  }
+}

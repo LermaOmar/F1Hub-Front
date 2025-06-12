@@ -1,0 +1,107 @@
+.guide-container {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  background-color: #111;
+  color: white;
+}
+
+.guide-sidebar {
+  background-color: #1b1b1b;
+  width: 260px;
+  padding: 24px 18px;
+  font-family: 'Orbitron', sans-serif;
+  font-weight: bold;
+  color: #fff;
+  border-right: 2px solid #333;
+}
+
+.guide-sidebar h1 {
+  font-size: 1.6rem;
+  color: #ffcb05;
+  margin: 30px;
+}
+
+.guide-sidebar nav ul {
+  list-style: none;
+  padding: 0;
+}
+
+.guide-sidebar nav ul li {
+  margin: 12px 0;
+  position: relative;
+}
+
+.guide-sidebar nav ul li > ul {
+  display: none;
+  padding-left: 16px;
+  margin-top: 8px;
+}
+
+.guide-sidebar nav ul li:hover > ul {
+  display: block;
+}
+
+.guide-sidebar a {
+  text-decoration: none;
+  color: white;
+  transition: color 0.2s ease;
+}
+
+.guide-sidebar a:hover,
+.guide-sidebar a.active {
+  color: #ffcb05;
+}
+
+.guide-sidebar li.active > span {
+  color: #ffcb05;
+}
+
+
+.guide-main {
+  flex-grow: 1;
+  padding: 36px;
+  background-color: #222;
+  overflow-y: auto;
+}
+
+.doc-section {
+  max-width: 900px;
+  margin: 0 auto;
+  line-height: 1.8;
+}
+
+.doc-section h1, .doc-section h2 {
+  color: #ffcb05;
+  margin: 15px;
+}
+
+.doc-section ul {
+  list-style: disc;
+  padding-left: 20px;
+}
+
+.doc-section img.doc-image {
+  display: block;
+  width: 100%;
+  max-width: 640px;
+  border: 2px solid #444;
+  border-radius: 8px;
+  margin: 18px 0;
+}
+
+.warning-box {
+  background-color: #2a1e00;
+  border-left: 4px solid #ffcb05;
+  padding: 12px 16px;
+  margin: 16px 0;
+  color: #ffcb05;
+  font-weight: bold;
+  font-family: 'Orbitron', sans-serif;
+  border-radius: 6px;
+}
+
+.guide-container img{
+    max-width: 80%;
+    margin: 30px;
+}
