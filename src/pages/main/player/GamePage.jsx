@@ -30,7 +30,7 @@ const GamePage = () => {
     
     <div className="game-page">
       {isErrorVisible && <div className="error-notification">{typedText}</div>}
-      <GameLineUp drivers={lineUp.drivers} team={lineUp.team} marketItems={marketItems} />
+      <GameLineUp drivers={lineUp.drivers} team={lineUp.team} marketItems={marketItems} leagueId={leagueId} />
       <MarketWidget items={marketItems} leagueId={leagueId} />
     </div>
   );

@@ -29,7 +29,7 @@ const MarketWidget = ({ leagueId }) => {
         await Promise.all(
           items.map(async ({ item }) => {
             try {
-              const offerRes = await axiosInstance.get(`/offers/${leagueId}/league/${item.id}/item`);
+              const offerRes = await axiosInstance.get(`/offers/${leagueId}/league/${item.id}/item/mine`);
               offerMap[item.id] = offerRes.data;
             } catch (err) {
               if (err.response?.status === 204) offerMap[item.id] = null;

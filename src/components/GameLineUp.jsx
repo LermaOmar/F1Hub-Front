@@ -4,9 +4,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 import axiosInstance from '../utils/AxiosInstance';
 import {useAjaxErrorHandler} from '../hooks/AjaxErrorHandler'
 
-const GameLineUp = ({ drivers = [], team, marketItems = [] }) => {
+const GameLineUp = ({ drivers = [], team, marketItems = [],leagueId }) => {
   const navigate = useNavigate();
-  const { leagueId } = useParams();
   const [offersModal, setOffersModal] = useState({ open: false, offers: [], item: null });
 
   const sortedDrivers = [...drivers].sort((a, b) => a.id - b.id);
