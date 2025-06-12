@@ -90,7 +90,7 @@ const GameLineUp = ({ drivers = [], team, marketItems = [],leagueId }) => {
             {offersModal.offers.length > 0 ? (
               <ul>
                 {offersModal.offers.map((offer) => (
-                  <li key={offer.id}>
+                  <li key={offer.id} style={{ listStyle: 'none' }}>
                     ${offer.amount.toLocaleString()} – by {offer.user?.username || 'Anonymous'}
                   </li>
                 ))}
