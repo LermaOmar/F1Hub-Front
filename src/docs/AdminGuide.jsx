@@ -13,7 +13,7 @@ const AdminGuide = () => (
         <li><strong>Create new user</strong> by clicking the yellow “➕” button at the top.</li>
         <li><strong>Filter active users</strong> using the "Show only active users" toggle.</li>
       </ul>
-      <img src="/docs/admin-panel-user.png" alt="Admin User Panel" className="doc-image" />
+      <img src={`${import.meta.env.BASE_URL}docs/admin-panel-user.png`} alt="Admin User Panel" className="doc-image" />
     </section>
 
     <section id="create-edit-user">
@@ -25,7 +25,7 @@ const AdminGuide = () => (
         <li>Setting active state with a toggle.</li>
         <li>Saving or canceling with the buttons below.</li>
       </ul>
-      <img src="/docs/create-user.png" alt="Create User Dialog" className="doc-image" />
+      <img src={`${import.meta.env.BASE_URL}docs/user-modal.png`} alt="User Dialog" className="doc-image" />
     </section>
 
     <section id="content-management">
@@ -36,7 +36,7 @@ const AdminGuide = () => (
         <li>Create a new Team or Driver using the “➕” button.</li>
         <li>Filter active entries using the toggle switch.</li>
       </ul>
-      <img src="/docs/admin-panel-content.png" alt="Admin Content Panel" className="doc-image" />
+      <img src={`${import.meta.env.BASE_URL}docs/admin-panel-content.png`} alt="Admin Content Panel" className="doc-image" />
     </section>
 
     <section id="create-edit-item">
@@ -48,7 +48,7 @@ const AdminGuide = () => (
         <li>Upload an image representing the item.</li>
         <li>Save or cancel your changes.</li>
       </ul>
-      <img src="/docs/create-item.png" alt="Create Item Dialog" className="doc-image" />
+      <img src={`${import.meta.env.BASE_URL}docs/item-modal.png`} alt="Content Dialog" className="doc-image" />
     </section>
   </div>
 );

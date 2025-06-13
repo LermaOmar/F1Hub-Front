@@ -19,7 +19,7 @@ const ReviewerGuide = () => {
           <li>Positions in Sprint Qualifying / Sprint Race</li>
           <li>Flags like MVP, Fast Lap, and Grand Chelem</li>
         </ul>
-        <img src="/docs/assign-drivers.png" alt="Assign Drivers Points" className="doc-image" />
+      <img src={`${import.meta.env.BASE_URL}docs/assign-drivers.png`} alt="Assign Drivers Points" className="doc-image" />
       </section>
 
       <section>
@@ -43,7 +43,7 @@ const ReviewerGuide = () => {
         <p>
           Team points are also computed automatically. You simply indicate the final race position of both drivers from each team.
         </p>
-        <img src="/docs/assign-teams.png" alt="Assign Team Points" className="doc-image" />
+        <img src={`${import.meta.env.BASE_URL}docs/assign-teams.png`} alt="Assign Teams Points" className="doc-image" />
         <p>
           The app calculates total team points using the positions provided for Driver 1 and Driver 2.
         </p>
@@ -52,7 +52,7 @@ const ReviewerGuide = () => {
       <section>
         <h2>💾 Saving</h2>
         <p>
-          You can save data for each driver/team individually using the yellow “Save” buttons, or submit everything at once with the “Save All” button at the top right.
+          You can save data for each driver individually using the yellow “Save” buttons, or submit everything at once with the “Save All” button at the top right. But you can only save all the team's data at once.
         </p>
       </section>
     </div>
