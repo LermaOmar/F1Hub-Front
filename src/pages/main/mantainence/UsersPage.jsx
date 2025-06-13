@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef} from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axiosInstance from '../../../utils/AxiosInstance';
 import { useNavigate } from 'react-router-dom';
 import UserTable from '../../../components/UserTable';
@@ -21,29 +21,23 @@ const UserPage = () => {
   const [isErrorVisible, setIsErrorVisible] = useState(false);
   const typingRef = useRef(null);
 
-  const checkToken = () =>{
+  const checkToken = () => {
     const token = localStorage.getItem('auth_token');
-
     if (!token) {
-        navigate('/login');
+      navigate('/login');
     } else {
-        axiosInstance.post('/auth/check')
-        .then(() => {
-            console.log("Valid token")
-            fetchUsers();
-        })
-        .catch((error) => {
-            console.error('Token invalid or expired:', error);
-            navigate('/login');
-        });
+      axiosInstance.post('/auth/check')
+        .then(() => fetchUsers())
+        .catch(() => navigate('/login'));
     }
-  }
+  };
+
   useEffect(() => {
-    checkToken()
+    checkToken();
   }, []);
-    
+
   useEffect(() => {
-    checkToken()
+    checkToken();
   }, [skipNotActive]);
 
   const showTypingError = (text) => {
@@ -72,27 +66,24 @@ const UserPage = () => {
         ...(skipNotActive && { skipNotActive: true })
       }
     })
-    .then(response => {
-      setUsers(response.data.content);
+    .then(res => {
+      setUsers(res.data.content);
       setPagination({
-        pageNumber: response.data.pageNumber,
-        pageSize: response.data.pageSize,
-        totalElements: response.data.totalElements,
-        totalPages: response.data.totalPages
+        pageNumber: res.data.pageNumber,
+        pageSize: res.data.pageSize,
+        totalElements: res.data.totalElements,
+        totalPages: res.data.totalPages
       });
     })
-    .catch(error => {
-      showTypingError(error?.response?.data?.error || error.message || 'Unexpected error occurred');
-      if (error.response?.status === 401 || error.response?.status === 403) {
+    .catch(err => {
+      showTypingError(err?.response?.data?.error || err.message);
+      if ([401, 403].includes(err.response?.status)) {
         setTimeout(() => navigate('/login'), 0);
       }
     });
   };
 
-  const handlePageChange = (page) => {
-    fetchUsers(page);
-  };
-
+  const handlePageChange = (page) => fetchUsers(page);
 
   const handleSave = async (user, isNew) => {
     const body = {
@@ -102,42 +93,40 @@ const UserPage = () => {
       password: user.password,
       roles: user.roles,
       active: user.active
-      
     };
-
     try {
       if (isNew) {
         await axiosInstance.post('/appUsers', body);
       } else {
         await axiosInstance.put(`/accounts/${user.id}`, body);
       }
-      setShowModal(false)
       fetchUsers();
-    } catch (error) {
-    showTypingError(error?.response?.data?.error || error.message || 'Unexpected error occurred');
-    if (error.response?.status === 401 || error.response?.status === 403) {
-      setTimeout(() => navigate('/login'), 0); // 🔁 FIX
+    } catch (err) {
+      showTypingError(err?.response?.data?.error || err.message);
+      if ([401, 403].includes(err.response?.status)) {
+        setTimeout(() => navigate('/login'), 0);
+      }
+    } finally {
+      setShowModal(false);
+      setSelectedUser(null);
     }
-}
-
-    setShowModal(false);
   };
 
   const handleDelete = async (id) => {
     if (window.confirm('Wanna delete this user?')) {
       try {
-        await axiosInstance.delete(`/appUsers/${id}`)
-        fetchUsers()
-      } catch (error) {
-        showTypingError(error?.response?.data?.error || error.message || 'Unexpected error occurred');
-        if (error.response?.status === 401 || error.response?.status === 403) {
+        await axiosInstance.delete(`/appUsers/${id}`);
+        fetchUsers();
+      } catch (err) {
+        showTypingError(err?.response?.data?.error || err.message);
+        if ([401, 403].includes(err.response?.status)) {
           navigate('/login');
         }
       }
     }
   };
 
-  const openModal = (user) => {
+  const openModal = (user = null) => {
     setSelectedUser(user);
     setShowModal(true);
   };
@@ -145,9 +134,18 @@ const UserPage = () => {
   return (
     <div className="user-page dark">
       <div className="header-controls">
-        <button className="back-btn" onClick={() => navigate('/dashboard')}>← Back to Dashboard</button>
-        <button className="add-btn" onClick={() => setShowModal(true)}>➕</button>
+        <button className="back-btn" onClick={() => navigate('/dashboard')}>
+          ← Back to Dashboard
+        </button>
+
+        <button
+          className="add-btn"
+          onClick={() => openModal(null)}
+        >
+          ➕
+        </button>
       </div>
+
       <div className="filter-toggle">
         <label className="switch-label">
           <span>Show only active users</span>
@@ -157,48 +155,50 @@ const UserPage = () => {
               checked={skipNotActive}
               onChange={(e) => setSkipNotActive(e.target.checked)}
             />
-            <span className="slider round"></span>
+            <span className="slider round" />
           </label>
         </label>
       </div>
 
-
       <h2 className="user-title">Users Management</h2>
+
       {isErrorVisible && errorMessage && (
         <div className="error-notification">
           <span className="error-message">{errorMessage}</span>
-          <button className="error-close" onClick={() => {
-            setIsErrorVisible(false);
-            setErrorMessage('');
-          }}>
+          <button
+            className="error-close"
+            onClick={() => {
+              setIsErrorVisible(false);
+              setErrorMessage('');
+            }}
+          >
             ❌
           </button>
         </div>
       )}
-      <UserTable users={users} onEdit={openModal} onDelete={handleDelete} />
+
+      <UserTable users={users} onEdit={(u) => openModal(u)} onDelete={handleDelete} />
+
       {showModal && (
         <UserFormModal
           user={selectedUser}
-          onClose={() => setShowModal(false)}
+          onClose={() => {
+            setShowModal(false);
+            setSelectedUser(null);
+          }}
           onSave={handleSave}
-          isOpen={showModal} // <-- AGREGA ESTA LÍNEA TAMBIÉN
+          isOpen={showModal}
         />
       )}
 
       <div className="pagination">
-        <button
-          onClick={() => handlePageChange(pagination.pageNumber - 1)}
-          disabled={pagination.pageNumber === 0}
-        >
+        <button onClick={() => handlePageChange(pagination.pageNumber - 1)}
+                disabled={pagination.pageNumber === 0}>
           ◀ Prev
         </button>
-
         <span>Page {pagination.pageNumber + 1} of {pagination.totalPages}</span>
-
-        <button
-          onClick={() => handlePageChange(pagination.pageNumber + 1)}
-          disabled={pagination.pageNumber + 1 >= pagination.totalPages}
-        >
+        <button onClick={() => handlePageChange(pagination.pageNumber + 1)}
+                disabled={pagination.pageNumber + 1 >= pagination.totalPages}>
           Next ▶
         </button>
       </div>
