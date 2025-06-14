@@ -5,7 +5,6 @@ import LeagueModal from '../../../components/LeagueModal';
 import { useNavigate } from 'react-router-dom';
 import { useAjaxErrorHandler } from '../../../hooks/AjaxErrorHandler';
 
-
 const LeaguePage = () => {
   const [leagues, setLeagues] = useState([]);
   const [page, setPage] = useState(0);
@@ -16,45 +15,64 @@ const LeaguePage = () => {
   const [joinLeagueId, setJoinLeagueId] = useState('');
   const [userId, setUserId] = useState(null);
   const [errorMessage, setErrorMessage] = useState('');
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const { typedText, isErrorVisible, handleAjaxError } = useAjaxErrorHandler();
-  
 
   useEffect(() => {
-    
-    const id = getUserIdFromToken()
-    setUserId(id)
-
-  }, []);
-
-  const getUserIdFromToken = () => {
-    const token = localStorage.getItem("auth_token");
-    if (!token) return null;
-    try {
-      const payload = JSON.parse(atob(token.split('.')[1]));
-      return payload.user_id || null;
-    } catch (err) {
-      console.error("Failed to parse token:", err);
-      return null;
+    const token = localStorage.getItem('auth_token');
+    if (token) {
+      try {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        setUserId(payload.user_id);
+      } catch {}
     }
-  };
-
+  }, []);
 
   useEffect(() => {
     fetchLeagues();
-  }, [page]);
+  }, [page, userId]);
 
-  const fetchLeagues = () => {
-    axiosInstance.get(`/leagues?page=${page}`)
-      .then(res => {
-        setLeagues(res.data.content);
-        setTotalPages(res.data.totalPages || 1);
-      })
-      .catch((err) => {
-        setLeagues([]);
-        setTotalPages(1);
-        handleAjaxError(err)
-      });
+  const fetchLeagues = async () => {
+    try {
+      const res = await axiosInstance.get(`/leagues?page=${page}`);
+      setTotalPages(res.data.totalPages || 1);
+      const basic = res.data.content || [];
+
+      const detailed = await Promise.all(basic.map(async league => {
+        let points = 0, budget = 0;
+
+        try {
+          const lineupRes = await axiosInstance.get(
+            `/lineUps/${league.id}/league/mine`
+          );
+          const { drivers = [], team } = lineupRes.data;
+          points = drivers.reduce(
+            (sum, d) => sum + (d.previousPoints || 0),
+            0
+          ) + (team?.previousPoints || 0);
+        } catch (err) {
+          
+        }
+
+        if (userId) {
+          try {
+            const budgetRes = await axiosInstance.get(
+              `/budgets/${userId}/user/${league.id}/league`
+            );
+            budget = budgetRes.data.budgetValue;
+          } catch (err) {
+          }
+        }
+
+        return { ...league, points, budget };
+      }));
+
+      setLeagues(detailed);
+    } catch (err) {
+      handleAjaxError(err);
+      setLeagues([]);
+      setTotalPages(1);
+    }
   };
 
   const handleCreateLeague = async () => {
@@ -64,31 +82,26 @@ const LeaguePage = () => {
     }
     try {
       await axiosInstance.post('/leagues', { name: newLeagueName });
+      setModalOpen(false);
       fetchLeagues();
-      closeModal();
     } catch (err) {
-      handleAjaxError(err)
-    }
-    finally{
-      closeModal()
+      handleAjaxError(err);
+      setModalOpen(false);
     }
   };
-
 
   const handleLeaveLeague = async (id) => {
     try {
       await axiosInstance.put(`/appUsers/leaveLeague/${id}`, { id: userId });
       fetchLeagues();
     } catch (err) {
-      handleAjaxError(err)
+      handleAjaxError(err);
     }
   };
 
   const handleCopyLink = (id) => {
     const link = `${window.location.origin}/join-league/${id}`;
-    navigator.clipboard.writeText(link)
-      .then(() => alert('Link copied!'))
-      .catch(err => console.error('Failed to copy:', err));
+    navigator.clipboard.writeText(link);
   };
 
   const openModal = (type) => {
@@ -104,35 +117,54 @@ const LeaguePage = () => {
     setErrorMessage('');
   };
 
-
   return (
     <div className="leagues-page">
       <h1 className="title">My Leagues</h1>
 
-      <div className="action-buttons">
-              <div className="header-controls">
-        <button className="back-btn" onClick={() => navigate('/dashboard')}>← Back to Dashboard</button>
-        <button className="add-btn" onClick={() => openModal('create')}>➕</button>
+      <div className="header-controls">
+        <button
+          className="back-btn"
+          onClick={() => navigate('/dashboard')}
+        >
+          ← Back to Dashboard
+        </button>
+        <button
+          className="add-btn"
+          onClick={() => openModal('create')}
+        >
+          ➕
+        </button>
       </div>
-      </div>
-        {isErrorVisible && typedText && (
-          <div className="error-notification">{typedText}</div>
-        )}
-        {leagues.length === 0 ? (
+
+      {isErrorVisible && typedText && (
+        <div className="error-notification">{typedText}</div>
+      )}
+
+      {leagues.length === 0 ? (
         <p className="no-leagues">⚠️ No leagues available.</p>
       ) : (
         <ul className="leagues-list">
-          {leagues.map((league) => (
-            <li   key={league.id} className="league-item">
-              <span className='league-name' onClick={() => navigate(`/player/leagues/${league.id}/lineup`)}>{league.name}</span>
+          {leagues.map(league => (
+            <li key={league.id} className="league-item">
+              <span
+                className="league-name"
+                onClick={() =>
+                  navigate(`/player/leagues/${league.id}/lineup`)
+                }
+              >
+                {league.name}
+              </span>
               <div className="details">
-                <span>Fantasy</span>
-                <span>0 PF</span>
-                <span>100,000,000</span>
+                <span>Points: {league.points}</span>
+                <span>Budget: {league.budget ?? '—'}</span>
               </div>
               <div className="league-actions">
-                <button onClick={() => handleCopyLink(league.id)}>🔗</button>
-                <button onClick={() => handleLeaveLeague(league.id)}>🚪 Leave</button>
+                <button onClick={() => handleCopyLink(league.id)}>
+                  🔗
+                </button>
+                <button onClick={() => handleLeaveLeague(league.id)}>
+                  🚪 Leave
+                </button>
               </div>
             </li>
           ))}
@@ -140,9 +172,21 @@ const LeaguePage = () => {
       )}
 
       <div className="pagination-controls">
-        <button disabled={page === 0} onClick={() => setPage(page - 1)}>◀ Prev</button>
-        <span>Page {leagues.length === 0 ? 0 : page + 1} of {leagues.length === 0 ? 0 : totalPages}</span>
-        <button disabled={page + 1 >= totalPages} onClick={() => setPage(page + 1)}>Next ▶</button>
+        <button
+          disabled={page === 0}
+          onClick={() => setPage(p => p - 1)}
+        >
+          ◀ Prev
+        </button>
+        <span>
+          Page {leagues.length ? page + 1 : 0} of {totalPages}
+        </span>
+        <button
+          disabled={page + 1 >= totalPages}
+          onClick={() => setPage(p => p + 1)}
+        >
+          Next ▶
+        </button>
       </div>
 
       <LeagueModal
