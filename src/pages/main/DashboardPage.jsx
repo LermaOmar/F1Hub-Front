@@ -96,7 +96,7 @@ const DashboardPage = () => {
 
     const handleLogout = () => {
         localStorage.removeItem('auth_token');
-        window.location.href = '/';
+        navigate("/#/login");
     };
 
     return (
