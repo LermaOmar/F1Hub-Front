@@ -8,25 +8,21 @@ const calculatePoints = ({
   race,
   qualySprint,
   sprintRace,
-  fastestLap = false,
-  driverOfTheDay = false,
-  grandChelem = false
+  fastestLap,
+  driverOfTheDay,
+  grandChelem
 }) => {
-  let points = 0;
-
-  if (qualy >= 1 && qualy <= 5) points += 6 - qualy;
-  if (race >= 1 && race <= 14) points += 16 - race;
-  else if (race >= 15 && race <= 20) points -= race - 14;
-
-  if (qualySprint >= 1 && qualySprint <= 3) points += 4 - qualySprint;
-  if (sprintRace >= 1 && sprintRace <= 14) points += 8 - sprintRace;
-  else if (sprintRace >= 15 && sprintRace <= 20) points -= sprintRace - 14;
-
-  if (fastestLap) points += 2;
-  if (driverOfTheDay) points += 2;
-  if (grandChelem) points += 5;
-
-  return points;
+  let pts = 0;
+  if (qualy >= 1 && qualy <= 5) pts += 6 - qualy;
+  if (race >= 1 && race <= 14) pts += 16 - race;
+  else if (race >= 15 && race <= 20) pts -= race - 14;
+  if (qualySprint >= 1 && qualySprint <= 3) pts += 4 - qualySprint;
+  if (sprintRace >= 1 && sprintRace <= 14) pts += 8 - sprintRace;
+  else if (sprintRace >= 15 && sprintRace <= 20) pts -= sprintRace - 14;
+  if (fastestLap) pts += 2;
+  if (driverOfTheDay) pts += 2;
+  if (grandChelem) pts += 5;
+  return pts;
 };
 
 const DriverPointsAssignmentPage = () => {
@@ -37,36 +33,29 @@ const DriverPointsAssignmentPage = () => {
   const typingRef = useRef(null);
   const navigate = useNavigate();
 
-  const showTypingError = (text) => {
-    if (!text || typeof text !== 'string') return;
-    const clean = text.replace(/undefined/g, '').replace(/\n/g, ' ').replace(/\s{2,}/g, ' ').trim();
-
+  const showError = (msg) => {
     if (typingRef.current) clearInterval(typingRef.current);
     setErrorMessage('');
     setIsErrorVisible(true);
-
-    let index = -1;
+    let idx = -1;
+    const clean = msg.replace(/undefined/g, '').replace(/\n/g, ' ').trim();
     typingRef.current = setInterval(() => {
-      setErrorMessage((prev) => prev + clean[index]);
-      index++;
-      if (index >= clean.length-1) {
+      setErrorMessage(prev => prev + clean[idx]);
+      idx++;
+      if (idx >= clean.length - 1) {
         clearInterval(typingRef.current);
-        setTimeout(() => {
-          setIsErrorVisible(false);
-          setErrorMessage('');
-        }, 3000);
+        setTimeout(() => setIsErrorVisible(false), 3000);
       }
     }, 40);
   };
 
-  const fetchDrivers = () => {
-    axiosInstance
-      .get(`/drivers?skipNotActive=true&page=0&size=50`)
-      .then(response => {
-        setDrivers(response.data.content);
-        const initial = {};
-        response.data.content.forEach(driver => {
-          initial[driver.id] = {
+  useEffect(() => {
+    axiosInstance.get('/drivers?skipNotActive=true&page=0&size=50')
+      .then(res => {
+        setDrivers(res.data.content);
+        const init = {};
+        res.data.content.forEach(d => {
+          init[d.id] = {
             qualy: '',
             race: '',
             qualySprint: '',
@@ -77,107 +66,115 @@ const DriverPointsAssignmentPage = () => {
             points: 0
           };
         });
-        setAssignments(initial);
+        setAssignments(init);
       })
-      .catch(error => {
-        showTypingError(error?.response?.data?.error || error.message || 'Unexpected error occurred');
-        if (error.response?.status === 401 || error.response?.status === 403) {
-          navigate('/login');
-        }
+      .catch(err => {
+        showError(err?.response?.data?.error || err.message);
+        if ([401, 403].includes(err.response?.status)) navigate('/login');
       });
-  };
+  }, [navigate]);
 
-  useEffect(() => {
-    fetchDrivers();
-  }, []);
+  const handleChange = (driverId, field, e) => {
+    const isCheck = ['fastestLap', 'driverOfTheDay', 'grandChelem'].includes(field);
+    const raw = isCheck ? e.target.checked : (parseInt(e.target.value, 10) || '');
 
-  const handleChange = (driverId, field, value) => {
+    if (field === 'qualy' && raw !== '' && (raw < 1 || raw > drivers.length))
+      return showError(`Qualy must be 1–${drivers.length}`);
+    if (field === 'race' && raw !== '' && (raw < 1 || raw > drivers.length))
+      return showError(`Race must be 1–${drivers.length}`);
+    if (field === 'qualySprint' && raw !== '' && (raw < 1 || raw > drivers.length))
+      return showError(`Q. Sprint must be 1–${drivers.length}`);
+    if (field === 'sprintRace' && raw !== '' && (raw < 1 || raw > drivers.length))
+      return showError(`Sprint Race must be 1–${drivers.length}`);
+    if (field === 'grandChelem' && raw) {
+      const current = assignments[driverId];
+      if (!(current.qualy === 1 && current.race === 1 && current.fastestLap)) {
+        return showError(
+          '❌ To grant Grand Chelem the driver must be 1st in Qualy, 1st in Race and have the Fastest Lap'
+        );
+      }
+    }
+
     setAssignments(prev => {
-      const current = { ...prev[driverId] };
-      const newValue =
-        field === 'fastestLap' || field === 'driverOfTheDay' || field === 'grandChelem'
-          ? value.target.checked
-          : parseInt(value.target.value) || '';
+      const next = Object.fromEntries(
+        Object.entries(prev).map(([id, a]) => [id, { ...a }])
+      );
+      const cur = { ...next[driverId], [field]: raw };
 
-      const updated = {
-        ...current,
-        [field]: newValue
-      };
-
-      const driver = drivers.find(d => d.id === driverId);
-
-      if (field === 'grandChelem' && newValue === true) {
-        const { qualy, race, fastestLap } = updated;
-        if (qualy !== 1 || race !== 1 || !fastestLap) {
-          showTypingError(`❌ ${driver?.name || 'Driver'} can not receive Grand Chelem without being 1st on Qualy, Race, having the Fastest Lap and Leading every lap`);
-          updated.grandChelem = false;
-        }
+      if (field === 'driverOfTheDay' && raw) {
+        Object.keys(next).forEach(id => {
+          next[id].driverOfTheDay = id === String(driverId);
+        });
+      }
+      if (field === 'fastestLap' && raw) {
+        Object.keys(next).forEach(id => {
+          next[id].fastestLap = id === String(driverId);
+        });
+      }
+      if (cur.qualy === 1 && cur.race === 1 && cur.fastestLap) {
+        cur.grandChelem = true;
+      } else if (field !== 'grandChelem') {
+        cur.grandChelem = false;
       }
 
-      if (
-        ['qualy', 'race', 'fastestLap'].includes(field) &&
-        current.grandChelem === true
-      ) {
-        const newQualy = field === 'qualy' ? newValue : current.qualy;
-        const newRace = field === 'race' ? newValue : current.race;
-        const newFL = field === 'fastestLap' ? newValue : current.fastestLap;
-
-        if (newQualy !== 1 || newRace !== 1 || !newFL) {
-          updated.grandChelem = false;
-          showTypingError(`⚠️ Grand Chelem is no longuer available to ${driver?.name || 'a driver'} because he does not accomplish the required conditions`);
-        }
-      }
-
-      return {
-        ...prev,
-        [driverId]: {
-          ...updated,
-          points: calculatePoints(updated)
-        }
-      };
+      cur.points = calculatePoints(cur);
+      next[driverId] = cur;
+      return next;
     });
-  };
-
-  const handleSubmit = (driverId) => {
-    const driver = drivers.find(d => d.id === driverId);
-    const points = assignments[driverId].points;
-
-    axiosInstance
-      .put(`/drivers/points/${driverId}`, null, {
-        params: { points }
-      })
-      .then(() => showTypingError(`✅Points assigned to ${driver?.name}: ${points}`))
-      .catch(() => showTypingError(`❌ Error assigning points to ${driver?.name}`));
   };
 
   const handleMassSubmit = async () => {
-    const promises = Object.keys(assignments).map(driverId => {
-      const points = assignments[driverId].points;
-      return axiosInstance.put(`/drivers/points/${driverId}`, null, {
-        params: { points }
-      });
-    });
-
+    for (let d of drivers) {
+      const a = assignments[d.id];
+      if (a.qualy === '' || a.race === '') {
+        return showError('⚠️ Qualy and Race required for every driver');
+      }
+      if ((a.qualySprint !== '' && a.sprintRace === '') ||
+          (a.qualySprint === '' && a.sprintRace !== '')) {
+        return showError('❌ Must fill both Q. Sprint and Sprint Race together');
+      }
+    }
+    const cols = ['qualy', 'race', 'qualySprint', 'sprintRace'];
+    for (let col of cols) {
+      const seen = new Set();
+      for (let d of drivers) {
+        const v = assignments[d.id][col];
+        if (v !== '' && seen.has(v)) {
+          return showError(`❌ Duplicate ${col} value`);
+        }
+        if (v !== '') seen.add(v);
+      }
+    }
+    const fastestLapCount = drivers.filter(d => assignments[d.id].fastestLap).length;
+    if (fastestLapCount !== 1) {
+      return showError('❌ You must select exactly one Fast Lap');
+    }
+    const mvpCount = drivers.filter(d => assignments[d.id].driverOfTheDay).length;
+    if (mvpCount !== 1) {
+      return showError('❌ You must select exactly one MVP');
+    }
     try {
-      await Promise.all(promises);
-      showTypingError('✅ Points assigned to all drivers');
-    } catch (error) {
-      showTypingError('❌ Error assigning points');
+      await Promise.all(drivers.map(d =>
+        axiosInstance.put(`/drivers/points/${d.id}`, null, { params: { points: assignments[d.id].points } })
+      ));
+      showError('✅ All points saved');
+    } catch {
+      showError('❌ Error saving points');
     }
   };
 
   return (
     <div className="assignment-page">
       <h2 className="points-title">Assign Drivers Points</h2>
-
       <div className="header-controls">
         <button className="back-btn" onClick={() => navigate('/dashboard')}>
           ← Back to Dashboard
         </button>
-        <button className="mass-submit-btn" onClick={handleMassSubmit}>💾 Save all</button>
+        <button className="mass-submit-btn" onClick={handleMassSubmit}>
+          💾 Save all
+        </button>
       </div>
-
-      {isErrorVisible && errorMessage && (
+      {isErrorVisible && (
         <div className="error-notification">
           {errorMessage}
           <button className="close-btn" onClick={() => setIsErrorVisible(false)}>
@@ -185,7 +182,6 @@ const DriverPointsAssignmentPage = () => {
           </button>
         </div>
       )}
-
       <table className="points-table">
         <thead>
           <tr>
@@ -198,24 +194,70 @@ const DriverPointsAssignmentPage = () => {
             <th>Fast Lap</th>
             <th>Grand Chelem</th>
             <th>Points</th>
-            <th>Save</th>
           </tr>
         </thead>
         <tbody>
-          {drivers.map(driver => {
-            const a = assignments[driver.id] || {};
+          {drivers.map(d => {
+            const a = assignments[d.id] || {};
             return (
-              <tr key={driver.id}>
-                <td>{driver.name}</td>
-                <td><input className="points-input" type="number" value={a.qualy || ''} onChange={(e) => handleChange(driver.id, 'qualy', e)} /></td>
-                <td><input className="points-input" type="number" value={a.race || ''} onChange={(e) => handleChange(driver.id, 'race', e)} /></td>
-                <td><input className="points-input" type="number" value={a.qualySprint || ''} onChange={(e) => handleChange(driver.id, 'qualySprint', e)} /></td>
-                <td><input className="points-input" type="number" value={a.sprintRace || ''} onChange={(e) => handleChange(driver.id, 'sprintRace', e)} /></td>
-                <td><input type="checkbox" className="points-checkbox" checked={a.driverOfTheDay || false} onChange={(e) => handleChange(driver.id, 'driverOfTheDay', e)} /></td>
-                <td><input type="checkbox" className="points-checkbox" checked={a.fastestLap || false} onChange={(e) => handleChange(driver.id, 'fastestLap', e)} /></td>
-                <td><input type="checkbox" className="points-checkbox" checked={a.grandChelem || false} onChange={(e) => handleChange(driver.id, 'grandChelem', e)} /></td>
-                <td className={`points-cell ${a.points < 0 ? 'negative' : ''}`}>{a.points || 0}</td>
-                <td><button className="points-button" onClick={() => handleSubmit(driver.id)}>Save</button></td>
+              <tr key={d.id}>
+                <td>{d.name}</td>
+                <td>
+                  <input
+                    type="number"
+                    className="points-input"
+                    value={a.qualy}
+                    onChange={e => handleChange(d.id, 'qualy', e)}
+                  />
+                </td>
+                <td>
+                  <input
+                    type="number"
+                    className="points-input"
+                    value={a.race}
+                    onChange={e => handleChange(d.id, 'race', e)}
+                  />
+                </td>
+                <td>
+                  <input
+                    type="number"
+                    className="points-input"
+                    value={a.qualySprint}
+                    onChange={e => handleChange(d.id, 'qualySprint', e)}
+                  />
+                </td>
+                <td>
+                  <input
+                    type="number"
+                    className="points-input"
+                    value={a.sprintRace}
+                    onChange={e => handleChange(d.id, 'sprintRace', e)}
+                  />
+                </td>
+                <td>
+                  <input
+                    type="checkbox"
+                    checked={a.driverOfTheDay}
+                    onChange={e => handleChange(d.id, 'driverOfTheDay', e)}
+                  />
+                </td>
+                <td>
+                  <input
+                    type="checkbox"
+                    checked={a.fastestLap}
+                    onChange={e => handleChange(d.id, 'fastestLap', e)}
+                  />
+                </td>
+                <td>
+                  <input
+                    type="checkbox"
+                    checked={a.grandChelem}
+                    onChange={e => handleChange(d.id, 'grandChelem', e)}
+                  />
+                </td>
+                <td className={a.points < 0 ? 'points-cell negative' : 'points-cell'}>
+                  {a.points}
+                </td>
               </tr>
             );
           })}

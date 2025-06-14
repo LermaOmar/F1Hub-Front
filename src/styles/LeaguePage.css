@@ -15,6 +15,13 @@
   color: #ffffff;
 }
 
+.league-name{
+  font-weight: bold;
+}
+
+.league-name:hover{
+  color: #ffcb05;
+}
 .action-buttons {
   display: flex;
   justify-content: center;
