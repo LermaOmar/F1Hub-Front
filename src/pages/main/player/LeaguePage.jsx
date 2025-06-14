@@ -123,8 +123,8 @@ const LeaguePage = () => {
       ) : (
         <ul className="leagues-list">
           {leagues.map((league) => (
-            <li  onClick={() => navigate(`/player/leagues/${league.id}/lineup`)} key={league.id} className="league-item">
-              <strong>{league.name}</strong>
+            <li   key={league.id} className="league-item">
+              <span className='league-name' onClick={() => navigate(`/player/leagues/${league.id}/lineup`)}>{league.name}</span>
               <div className="details">
                 <span>Fantasy</span>
                 <span>0 PF</span>
