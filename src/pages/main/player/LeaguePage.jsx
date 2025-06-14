@@ -100,7 +100,7 @@ const LeaguePage = () => {
   };
 
   const handleCopyLink = (id) => {
-    const link = `${window.location.origin}/join-league/${id}`;
+    const link = `https://lermaomar.github.io/F1Hub-Front/#/join-league/${id}`;
     navigator.clipboard.writeText(link);
   };
 
