@@ -35,7 +35,7 @@ const OfferModal = ({ item, editing, leagueId, onClose }) => {
 
     const method = editing ? 'put' : 'post';
     const url = editing
-      ? `/offers/${leagueId}/league/${item.id}/item/${item.offerId}`
+      ? `/offers/${item.offerId}`
       : `/offers`;
 
     axiosInstance[method](url, payload)
