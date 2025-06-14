@@ -3,5 +3,5 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   base: '/F1Hub-Front/',
-  plugins: [react()],
+  plugins: [react()], 
 })
